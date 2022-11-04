@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="取值取值特点 非分支跳转指令 分支跳转指令 指令长度不对齐  快速取值 存储器演示越小越好。 但片外 DDR 或 Flash 可能需要几十个周期的延时，片上 SRAM 也可能需要几个周期的延时。   ITCM 指令紧耦合存储器  配置一段较小容量的存储器（几十 KB 的 SRAM）用于存储指令，且在物理上离处理器核很近，专属于存储器，因此能取得很小的延时。   优点 能保证实时性；简单。   缺点">
+<meta property="og:type" content="article">
+<meta property="og:title" content="E203_Fetch">
+<meta property="og:url" content="http://example.com/2022/11/04/E203-Fetch/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="取值取值特点 非分支跳转指令 分支跳转指令 指令长度不对齐  快速取值 存储器演示越小越好。 但片外 DDR 或 Flash 可能需要几十个周期的延时，片上 SRAM 也可能需要几个周期的延时。   ITCM 指令紧耦合存储器  配置一段较小容量的存储器（几十 KB 的 SRAM）用于存储指令，且在物理上离处理器核很近，专属于存储器，因此能取得很小的延时。   优点 能保证实时性；简单。   缺点">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="c:\Cheems\Work\Note\RISCV\Images\%E4%B8%A4%E7%BA%A7%E9%A2%84%E6%B5%8B%E5%99%A8.jpg">
+<meta property="og:image" content="c:\Cheems\Work\Note\RISCV\Images\%E6%8C%87%E4%BB%A4%E9%95%BF%E5%BA%A6%E6%8C%87%E7%A4%BA%E7%A0%81.jpg">
+<meta property="og:image" content="c:\Cheems\Work\Note\RISCV\Images\IFU.png">
+<meta property="article:published_time" content="2022-11-04T12:10:17.000Z">
+<meta property="article:modified_time" content="2022-11-04T12:30:22.344Z">
+<meta property="article:author" content="Cheems">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="c:\Cheems\Work\Note\RISCV\Images\%E4%B8%A4%E7%BA%A7%E9%A2%84%E6%B5%8B%E5%99%A8.jpg">
+
+<link rel="canonical" href="http://example.com/2022/11/04/E203-Fetch/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>E203_Fetch | Hexo</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Hexo</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/11/04/E203-Fetch/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="Cheems">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          E203_Fetch
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2022-11-04 20:10:17 / Modified: 20:30:22" itemprop="dateCreated datePublished" datetime="2022-11-04T20:10:17+08:00">2022-11-04</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/RISC-V/" itemprop="url" rel="index"><span itemprop="name">RISC-V</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/RISC-V/E203/" itemprop="url" rel="index"><span itemprop="name">E203</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="取值"><a href="#取值" class="headerlink" title="取值"></a>取值</h1><h2 id="取值特点"><a href="#取值特点" class="headerlink" title="取值特点"></a>取值特点</h2><ul>
+<li>非分支跳转指令</li>
+<li>分支跳转指令</li>
+<li>指令长度不对齐</li>
+</ul>
+<h2 id="快速取值"><a href="#快速取值" class="headerlink" title="快速取值"></a>快速取值</h2><blockquote>
+<p>存储器演示越小越好。</p>
+<p>但片外 DDR 或 Flash 可能需要几十个周期的延时，片上 SRAM 也可能需要几个周期的延时。</p>
+</blockquote>
+<ul>
+<li><p><strong>ITCM 指令紧耦合存储器</strong></p>
+<blockquote>
+<p>配置一段较小容量的存储器（几十 KB 的 SRAM）用于存储指令，且在物理上离处理器核很近，专属于存储器，因此能取得很小的延时。</p>
+</blockquote>
+<ul>
+<li>优点<ul>
+<li>能保证实时性；简单。</li>
+</ul>
+</li>
+<li>缺点<ul>
+<li>使用地址区间寻址，不能像 Cache 映射无限的存储器空间。</li>
+<li>为了保证足够小的访问延时，无法将容量做到很大，因此只能用于存放容量大小有限的关键程序指令。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>I-Cache 指令缓存</strong></p>
+<blockquote>
+<p>利用软件程序的时间局部性和空间局部性，将容量巨大的外部指令存储器空间动态映射到容量有限的指令缓存中，可将访问指令存储器的平均延时降低到最小。(CPU_cache)</p>
+</blockquote>
+<ul>
+<li>缺点<ul>
+<li>无法保证实时性。缓存容量有限，因此访问缓存存在不确定性。一旦缓存不命中(Cache Miss)，则需要从外部存储器存取数据，造成较大延时。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="非对齐指令"><a href="#非对齐指令" class="headerlink" title="非对齐指令"></a>非对齐指令</h2><blockquote>
+<p>指令长度可以不相等。</p>
+<p>例：一条32位指令处于地址不对齐的位置，则需要分两个周期读出两个32位数据，再各取一部分拼接成32位指令。</p>
+</blockquote>
+<ul>
+<li><p><strong>普通指令非对齐</strong></p>
+<ul>
+<li><p>剩余缓存 Leftover Buffer</p>
+<blockquote>
+<p>剩余缓存保存上次取值后没用完的比特位，供下个周期使用。（待下个周期取出数据后，直接拼接成完整的指令。）</p>
+</blockquote>
+</li>
+</ul>
+</li>
+<li><p><strong>分支跳转指令非对齐</strong></p>
+<ul>
+<li><p>多体(Bank)化的 SRAM 进行指令存储</p>
+<blockquote>
+<p>最常见的奇偶交错方式：使用两块32位宽的 SRAM 交错地进行存储，两个连续的32位指令字将会被分别存储在两块 SRAM 中。则一个周期可以同时访问两块 SRAM 取出两个连续的32位指令字，拼接得到真正的32位指令。</p>
+</blockquote>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="分支指令"><a href="#分支指令" class="headerlink" title="分支指令"></a>分支指令</h2><ul>
+<li><p><strong>分支指令类型</strong></p>
+<ul>
+<li><p>无条件跳转&#x2F;分支指令</p>
+<ul>
+<li><p>无条件直接跳转&#x2F;分支指令</p>
+<blockquote>
+<p>跳转目标地址从指令编码中的立即数可以直接计算得到。</p>
+</blockquote>
+</li>
+<li><p>无条件间接跳转&#x2F;分支指令</p>
+<blockquote>
+<p>跳转目标地址需要从寄存器索引的操作数中计算得到。</p>
+</blockquote>
+</li>
+</ul>
+</li>
+<li><p>带条件跳转&#x2F;分支指令</p>
+<ul>
+<li>带条件直接跳转&#x2F;分支指令</li>
+<li>带条件间接跳转&#x2F;分支指令</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>预测方向</strong></p>
+<blockquote>
+<p>预测是否跳转</p>
+</blockquote>
+<ul>
+<li><p>静态预测</p>
+<blockquote>
+<p>仅依靠分支指令本身的信息进行预测</p>
+</blockquote>
+<ul>
+<li><p>总是预测分支指令不会跳转</p>
+<blockquote>
+<p>取值单元总是顺序取分支指令的下一条指令。若需要跳转，则冲刷流水线，重新进行取值。</p>
+</blockquote>
+</li>
+<li><p>分支延迟槽 Delay Slot</p>
+<blockquote>
+<p>在每一条分支指令后紧跟的一条或若干条指令不受分支跳转的影响，不管分支是否跳转，后面几条指令都一定会被执行。</p>
+</blockquote>
+</li>
+<li><p>BTFN 预测 (Back Taken, Forward Not Taken)</p>
+<blockquote>
+<p>对向后跳转（目标地址小于当前分支地址）的预测为跳，对向前跳转的预测则为不跳。因为实际汇编程序中向后跳转的情形要多于向前跳转。</p>
+</blockquote>
+</li>
+</ul>
+</li>
+<li><p>动态预测</p>
+<blockquote>
+<p>依赖已经执行过的指令的历史信息和分支指令本身的信息进行预测</p>
+</blockquote>
+<ul>
+<li><p>一比特饱和计数器 1-bit Saturating Counter</p>
+<blockquote>
+<p>每次分支指令执行后，用此计数器记录上一次的方向。</p>
+<p>下一次分支指令永远采用上次记录的方向作为本次的预测。</p>
+</blockquote>
+</li>
+<li><p>两比特饱和计数器 2-bit Saturating Counter</p>
+<blockquote>
+<p>状态机转换：</p>
+<p>![2-bit Saturating Counter](C:\Cheems\Work\Note\RISCV\Images\2-bit Saturating Counter.jpg)</p>
+<p>预测精度高于 1-bit Saturating Counter 。</p>
+</blockquote>
+<blockquote>
+<p>“两比特饱和计数器”对于预测一条分支指令很有效，但是处理器执行的指令流中存在着众多的不同分支指令(位于不同的PC值位置)。假设只使用一个“两比特饱和计数器”在任何分支指令执行时均进行更新，那么必然会互相冲击，预测的结果会很不理想。</p>
+<p>最理想的情况是为每一条分支指令都分配专有的“两比特饱和计数器”为其进行预测，但是指令数目众多（32位架构理论上有4G的地址空间），不可能提供巨量的两比特饱和计数器（硬件资源开销无法接受）。所以只能够使用有限个“两比特饱和计数器”组织成一个表格，然后对于每条分支指令使用某种形式寻址方式索引表格中的某个表项的“两比特饱和计数器”。由于表格中的表项数目有限而指令数目众多，因此很多不同的分支指令都会不可避免地指向同样的表项，这种问题称为别名重合(Aliasing)。</p>
+</blockquote>
+</li>
+<li><p>一级预测器</p>
+<blockquote>
+<p>将有限个 2-bit Saturating Counter 组织成一维的表格，称为预测器表格（Predictor Table），并直接用 PC 值的一部分进行索引。</p>
+<p>索引机制过于简单，如低10位相同但高10位不同的 PC 对应的指令，指向的表项相同。</p>
+</blockquote>
+</li>
+<li><p>两级预测器（相关预测器）</p>
+<blockquote>
+<p>将有限个 2-bit Saturating Counter 组织成 PHT (Pattern History Table)，并使用该分支跳转的历史（Branch History）作为PHT的索引。</p>
+<img src="C:\Cheems\Work\Note\RISCV\Images\两级预测器.jpg" alt="两级预测器" style="zoom:15%;" />
+
+<ul>
+<li><p>局部分支预测器</p>
+<blockquote>
+<p>使用分立的局部历史缓存（Local Branch Buffer）来保存不同分支指令的分支历史。</p>
+</blockquote>
+</li>
+<li><p>全局分支预测器</p>
+<blockquote>
+<p>所有分支指令共享全局历史缓存（Global History Buffer）。</p>
+<p>不同指令会互相冲击；优势是节省资源，PHT 容量越大，优势越明显。</p>
+</blockquote>
+<ul>
+<li>代表算法<ul>
+<li>Gshare：将 PC 一部分与全局历史缓存异或作为索引。</li>
+<li>Gselect：将 PC 一部分与全局历史缓存拼接作为索引。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>预测地址</strong></p>
+<blockquote>
+<p>预测跳转目标地址</p>
+</blockquote>
+<ul>
+<li><p>BTB 分支目标缓存</p>
+<blockquote>
+<p>使用容量有限的缓存保存最近执行过的分支指令的 PC 值以及其跳转目标地址。</p>
+<p>后续需要取值的 PC 值与 BTB 中存储的各个 PC 值进行比较，若匹配则跳转至目标地址。</p>
+<ul>
+<li>缺点<ul>
+<li>不能将 BTB 容量做到太大，否则面积和时序无法接受。</li>
+<li>对于间接跳转&#x2F;分支指令的预测效果不理想，因为寄存器中的操作数可能更新，导致跳转地址变化。</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+</li>
+<li><p>RAS 返回地址堆栈</p>
+<blockquote>
+<p>使用容量有限的硬件堆栈来存储函数调用的返回地址。</p>
+<p>间接跳转&#x2F;分支指令可以用于函数的调用和返回，而函数的调用和返回往往成对出现，因此可在函数调用时将当前 PC 值加4（或2），即其顺序执行的下一条指令的 PC 值压入 RAS 堆栈中，等到函数返回时将 RAS 中的值弹出，就可以快速的为该函数返回的分支跳转指令预测目标地址。</p>
+<p>RAS 深度有限，若出现多次函数嵌套，可能带着堆栈溢出，影响准确率，需硬件特殊处理。</p>
+</blockquote>
+</li>
+<li><p>Indirect BTB 间接分支目标缓存</p>
+<blockquote>
+<p>与普通 BTB 相似，但采用高级的索引方法进行匹配（而非简单的 PC 值比较）。</p>
+<p>硬件开销大，只有高级处理器会使用。</p>
+</blockquote>
+</li>
+</ul>
+</li>
+<li><p><strong>Wiki Branch_predictor</strong></p>
+</li>
+</ul>
+<h2 id="RISC-V-对于取值的简化"><a href="#RISC-V-对于取值的简化" class="headerlink" title="RISC-V 对于取值的简化"></a>RISC-V 对于取值的简化</h2><ul>
+<li><p><strong>规整的指令编码格式</strong></p>
+</li>
+<li><p><strong>指令长度指示码放于低位</strong></p>
+<blockquote>
+<p>方便取值逻辑在顺序取值的时候以最快的速度译码出指令的长度。</p>
+<p>若不支持压缩指令子集（16位），甚至可以忽略不存储指令字的低2位。</p>
+<img src="C:\Cheems\Work\Note\RISCV\Images\指令长度指示码.jpg" alt="指令长度指示码" style="zoom: 15%;" />
+</blockquote>
+</li>
+<li><p><strong>简单的分支跳转指令</strong>（例：RV32I）</p>
+<blockquote>
+<p>jal 可用于子程序调用，并将子程序返回地址存在结果寄存器。</p>
+<p>jalr 可用于子程序返回指令，使用 jal 的结果寄存器可从子程序返回。</p>
+<p>bxx 将两个操作数进行比较，满足条件则跳转。将比较和跳转放在一个指令中，减少指令数目，同时硬件设计更简单。</p>
+</blockquote>
+<ul>
+<li><p>无条件直接跳转&#x2F;分支指令</p>
+<blockquote>
+<p>jal：jal x5, offset</p>
+<p>指令字中的20位立即数作为偏移量 offset，跳转目标地址 &#x3D; offset*2 + 当前指令 PC。</p>
+<p>将下一条指令的 PC（当前 PC + 4）写入其结果寄存器。</p>
+</blockquote>
+</li>
+<li><p>无条件间接跳转&#x2F;分支指令</p>
+<blockquote>
+<p>jalr：jalr x1, x6, offset</p>
+<p>指令字中的12位立即数作为偏移量 offset，跳转目标地址 &#x3D; offset + 另一个寄存器索引的操作数。</p>
+<p>将下一条指令的 PC（当前 PC + 4）写入其结果寄存器。</p>
+</blockquote>
+</li>
+<li><p>带条件直接跳转&#x2F;分支指令</p>
+<blockquote>
+<p>beq：两个整数操作数相等则跳转。</p>
+<p>bne：两个整数不相等则跳转。</p>
+<p>blt：第一个有符号数小于第二个有符号数则跳转。</p>
+<p>bltu：第一个无符号数小于第二个无符号数则跳转。</p>
+<p>bge：第一个有符号数大于等于第二个有符号数则跳转。</p>
+<p>bgeu：第一个无符号数大于等于第二个无符号数则跳转。</p>
+</blockquote>
+</li>
+</ul>
+</li>
+<li><p><strong>没有分支延迟槽指令</strong></p>
+<blockquote>
+<p>早期 RISC 处理器没有高级的硬件动态分支预测器，分支延迟槽能取得可观的效果，但是也导致硬件设计复杂。</p>
+<p>现代高性能处理器的分支预测算法精度已经非常高，分支延迟槽效果不明显。且对于低功耗小面积的处理器可以使用简单的电路实现，无分支延迟槽能减少功耗和提高时序。</p>
+</blockquote>
+</li>
+<li><p><strong>提供明确的静态分支预测依据</strong></p>
+<blockquote>
+<p>RISC-V 架构明确规定，编译器生成的代码应该尽量优化，使得向后跳转的分支指令比向前跳转的分支指令有更大的概率进行跳转。</p>
+<p>对于使用静态预测的低端处理器，可以提高静态预测的准确率。</p>
+</blockquote>
+</li>
+<li><p><strong>提供明确的 RAS 依据</strong></p>
+<blockquote>
+<p>1</p>
+</blockquote>
+</li>
+</ul>
+<h2 id="蜂鸟-E200-的取值实现"><a href="#蜂鸟-E200-的取值实现" class="headerlink" title="蜂鸟 E200 的取值实现"></a>蜂鸟 E200 的取值实现</h2><p><img src="C:\Cheems\Work\Note\RISCV\Images\IFU.png" alt="IFU"></p>
+<blockquote>
+<ul>
+<li><p>快</p>
+<blockquote>
+<p>假定绝大多数取值都发生在 ITCM，不使用 I-Cache 。蜂鸟 E200 应用于低功耗和小面积场景，ITCM 满足实时性的要求；且这种级别处理器的代码量不大，往往可以全部加载在 ITCM 中。</p>
+<p>ITCM 使用单周期访问的 SRAM，一个周期就可以取一条指令。</p>
+<p>某些特殊情况下，指令需要从外部存储器中读取，此时需要通过 BIU 使用系统存储接口访问外部存储器，延时高，故软件设计应注意。</p>
+</blockquote>
+</li>
+<li><p>连续不断</p>
+<blockquote>
+<p>Mini-Decode 将取回的指令进行部分译码。</p>
+<p>若译码的信息显示为分支跳转指令，则 Simple-BPU 进行分支预测。</p>
+<p>使用译码得出的信息和分支预测的信息进行下一条指令 PC 的生成。</p>
+<p>一个周期内完成众多步骤，则主频受到制约。但 RISC-V 架构简单，译码、分支预测消耗延时不算太大，且蜂鸟 E200 重在低功耗和小面积，可适当放弃主频。</p>
+</blockquote>
+</li>
+</ul>
+</blockquote>
+<ul>
+<li><p><strong>Mini-Decode</strong></p>
+<ul>
+<li><p>译码输入</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">input</span>  [`E203_INSTR_SIZE-<span class="number">1</span>:<span class="number">0</span>] instr,  <span class="comment">// instruction fetched</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>译码输出</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">output</span> dec_rv32,  <span class="comment">// 16bit or 32bit</span></span><br><span class="line"><span class="keyword">output</span> dec_bjp,   <span class="comment">// Common instruction or branch/jump instruction</span></span><br><span class="line"><span class="keyword">output</span> dec_jal,   <span class="comment">// jal instruction</span></span><br><span class="line"><span class="keyword">output</span> dec_jalr,  <span class="comment">// jalr instruction</span></span><br><span class="line"><span class="keyword">output</span> dec_bxx,   <span class="comment">// bxx instruction</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>例化调用完整的Decode模块</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Instantiate a Decode module, but set unrelated input signal to 0, hang unrelated output signal to air.</span></span><br><span class="line">e203_exu_decode u_e203_exu_decode(</span><br><span class="line">    </span><br><span class="line"><span class="variable">.i_pc</span>(`E203_PC_SIZE&#x27;b0),  <span class="comment">// Set unrelated input signal to 0.</span></span><br><span class="line"><span class="variable">.i_prdt_taken</span>(<span class="number">1&#x27;b0</span>), </span><br><span class="line"><span class="variable">.i_muldiv_b2b</span>(<span class="number">1&#x27;b0</span>), </span><br><span class="line"></span><br><span class="line"><span class="variable">.dec_misalgn</span>(),           <span class="comment">// Hang unrelated output signal to air.</span></span><br><span class="line"><span class="variable">.dec_buserr</span>(),</span><br><span class="line"><span class="variable">.dec_ilegl</span>(),</span><br><span class="line">    </span><br><span class="line">...</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>只需要维护一份 Decode 模块的源代码，而非 Full-Decode 和 Mini-Decode 两份。</p>
+</blockquote>
+</li>
+</ul>
+</li>
+<li><p><strong>Simple-BPU</strong></p>
+<blockquote>
+<p>蜂鸟 E200 面向低功耗应用，只采用最简单的静态预测。</p>
+</blockquote>
+<ul>
+<li><p>带条件直接跳转指令 BXX</p>
+<ul>
+<li><p>预测方向：向后跳则预测为需要跳，向前跳则预测为不需要跳。</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// The JAL and JALR is always jump, bxxx backward is predicted as taken  </span></span><br><span class="line"><span class="keyword">assign</span> prdt_taken = (dec_jal | dec_jalr | (dec_bxx &amp; dec_bjp_imm[`E203_XLEN-<span class="number">1</span>]));  </span><br></pre></td></tr></table></figure>
+</li>
+<li><p>预测目标地址：offset + PC</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Operand 1: If bxx, use it&#x27;s PC.</span></span><br><span class="line"><span class="keyword">assign</span> prdt_pc_add_op1 = (dec_bxx | dec_jal) ? pc[`E203_PC_SIZE-<span class="number">1</span>:<span class="number">0</span>]</span><br><span class="line">                       : (dec_jalr &amp; dec_jalr_rs1x0) ? `E203_PC_SIZE&#x27;b0</span><br><span class="line">                       : (dec_jalr &amp; dec_jalr_rs1x1) ? rf2bpu_x1[`E203_PC_SIZE-<span class="number">1</span>:<span class="number">0</span>]</span><br><span class="line">                       : rf2bpu_rs1[`E203_PC_SIZE-<span class="number">1</span>:<span class="number">0</span>];  </span><br><span class="line"><span class="comment">// Operand 2: Use offset.</span></span><br><span class="line"><span class="keyword">assign</span> prdt_pc_add_op2 = dec_bjp_imm[`E203_PC_SIZE-<span class="number">1</span>:<span class="number">0</span>];  </span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>无条件直接跳转指令 jal</p>
+<ul>
+<li><p>预测方向：一定会跳转。</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// The JAL and JALR is always jump, bxxx backward is predicted as taken  </span></span><br><span class="line"><span class="keyword">assign</span> prdt_taken = (dec_jal | dec_jalr | (dec_bxx &amp; dec_bjp_imm[`E203_XLEN-<span class="number">1</span>])); </span><br></pre></td></tr></table></figure>
+</li>
+<li><p>预测目标地址：offset + PC</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Operand 1: If jal, use it&#x27;s PC.</span></span><br><span class="line"><span class="keyword">assign</span> prdt_pc_add_op1 = (dec_bxx | dec_jal) ? pc[`E203_PC_SIZE-<span class="number">1</span>:<span class="number">0</span>]</span><br><span class="line">                       : (dec_jalr &amp; dec_jalr_rs1x0) ? `E203_PC_SIZE&#x27;b0</span><br><span class="line">                       : (dec_jalr &amp; dec_jalr_rs1x1) ? rf2bpu_x1[`E203_PC_SIZE-<span class="number">1</span>:<span class="number">0</span>]</span><br><span class="line">                       : rf2bpu_rs1[`E203_PC_SIZE-<span class="number">1</span>:<span class="number">0</span>];  </span><br><span class="line"><span class="comment">// Operand 2: Use offset.</span></span><br><span class="line"><span class="keyword">assign</span> prdt_pc_add_op2 = dec_bjp_imm[`E203_PC_SIZE-<span class="number">1</span>:<span class="number">0</span>]; </span><br></pre></td></tr></table></figure>
+</li>
+<li><p>无条件间接跳转指令 jalr</p>
+<ul>
+<li><p>预测方向：一定会跳转。</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// The JAL and JALR is always jump, bxxx backward is predicted as taken  </span></span><br><span class="line"><span class="keyword">assign</span> prdt_taken = (dec_jal | dec_jalr | (dec_bxx &amp; dec_bjp_imm[`E203_XLEN-<span class="number">1</span>])); </span><br></pre></td></tr></table></figure>
+</li>
+<li><p>预测目标地址：offset + 操作数</p>
+<blockquote>
+<p>操作数来自其 rs1 索引的 Regfile ，根据 rs1 索引值判断。</p>
+</blockquote>
+<ul>
+<li><p>rs1 &#x3D;&#x3D; x0</p>
+<blockquote>
+<p>操作数是0。</p>
+</blockquote>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// The JALR rs1 index: x0.</span></span><br><span class="line"><span class="keyword">wire</span> dec_jalr_rs1x0 = (dec_jalr_rs1idx == `E203_RFIDX_WIDTH&#x27;d0);</span><br><span class="line"></span><br><span class="line"><span class="comment">// Operand 1: If jalr with rs1 == x0, use 0. </span></span><br><span class="line"><span class="keyword">assign</span> prdt_pc_add_op1 = (dec_bxx | dec_jal) ? pc[`E203_PC_SIZE-<span class="number">1</span>:<span class="number">0</span>]</span><br><span class="line">                         : (dec_jalr &amp; dec_jalr_rs1x0) ? `E203_PC_SIZE&#x27;b0</span><br><span class="line">                         : (dec_jalr &amp; dec_jalr_rs1x1) ? rf2bpu_x1[`E203_PC_SIZE-<span class="number">1</span>:<span class="number">0</span>]</span><br><span class="line">                         : rf2bpu_rs1[`E203_PC_SIZE-<span class="number">1</span>:<span class="number">0</span>];  </span><br><span class="line"><span class="comment">// Operand 2: Use offset.</span></span><br><span class="line"><span class="keyword">assign</span> prdt_pc_add_op2 = dec_bjp_imm[`E203_PC_SIZE-<span class="number">1</span>:<span class="number">0</span>];  </span><br></pre></td></tr></table></figure>
+</li>
+<li><p>rs &#x3D;&#x3D; x1</p>
+<blockquote>
+<p>操作数来自 x1。</p>
+<p>x1 常用于 link 寄存器作为函数返回跳转指令，故对其特别加速，将 x1 从 处于 EXU 中的 Regfile 中直接硬连线出。</p>
+<p>为了防止 RAW 相关性，需要判断 OITF 为空，以及当前 EXU指令没有写回 x1。</p>
+</blockquote>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// The JALR rs1 index: x1.</span></span><br><span class="line"><span class="keyword">wire</span> dec_jalr_rs1x1 = (dec_jalr_rs1idx == `E203_RFIDX_WIDTH&#x27;d1);</span><br><span class="line"></span><br><span class="line"><span class="comment">// OITF not empty, means a long instruction is running, maybe write back to x1.</span></span><br><span class="line"><span class="comment">// Instruction in IR register will write back to x1.</span></span><br><span class="line"><span class="keyword">wire</span> jalr_rs1x1_dep = dec_i_valid &amp; dec_jalr &amp; dec_jalr_rs1x1 &amp; ((~oitf_empty) | (jalr_rs1idx_cam_irrdidx));</span><br><span class="line"></span><br><span class="line"><span class="comment">// x1 RAW dependency resists, bpu_wait will prevent IFU from generating next PC until RAW removed.</span></span><br><span class="line"><span class="keyword">assign</span> bpu_wait = jalr_rs1x1_dep | jalr_rs1xn_dep | rs1xn_rdrf_set;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Operand 1: If jalr with rs1 == x1, use x1 data directly from Regfile. </span></span><br><span class="line"><span class="keyword">assign</span> prdt_pc_add_op1 = (dec_bxx | dec_jal) ? pc[`E203_PC_SIZE-<span class="number">1</span>:<span class="number">0</span>]</span><br><span class="line">                         : (dec_jalr &amp; dec_jalr_rs1x0) ? `E203_PC_SIZE&#x27;b0</span><br><span class="line">                         : (dec_jalr &amp; dec_jalr_rs1x1) ? rf2bpu_x1[`E203_PC_SIZE-<span class="number">1</span>:<span class="number">0</span>]</span><br><span class="line">                         : rf2bpu_rs1[`E203_PC_SIZE-<span class="number">1</span>:<span class="number">0</span>];  </span><br><span class="line"><span class="comment">// Operand 2: Use offset.</span></span><br><span class="line"><span class="keyword">assign</span> prdt_pc_add_op2 = dec_bjp_imm[`E203_PC_SIZE-<span class="number">1</span>:<span class="number">0</span>]; </span><br></pre></td></tr></table></figure>
+</li>
+<li><p>rs &#x3D;&#x3D; xn</p>
+<blockquote>
+<p>操作数来自 xn。</p>
+<p>xn 需要从 Regfile 的 Read Port 1 读出，需要判定是否空闲且不存在资源冲突。</p>
+<p>为了防止 RAW 相关性，需要判断当前 EXU 中无任何指令。</p>
+</blockquote>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// The JALR rs1 index: xn.</span></span><br><span class="line"><span class="keyword">wire</span> dec_jalr_rs1xn = (~dec_jalr_rs1x0) &amp; (~dec_jalr_rs1x1);</span><br><span class="line"></span><br><span class="line"><span class="comment">// OITF not empty, means a long instruction is running, maybe write back to xn.</span></span><br><span class="line"><span class="comment">// Instruction in IR register maybe writes back to xn.</span></span><br><span class="line"><span class="keyword">wire</span> jalr_rs1xn_dep = dec_i_valid &amp; dec_jalr &amp; dec_jalr_rs1xn &amp; ((~oitf_empty) | (~ir_empty));</span><br><span class="line"></span><br><span class="line"><span class="comment">// Judge if Read Port 1 has conflict.</span></span><br><span class="line"><span class="keyword">wire</span> rs1xn_rdrf_r;</span><br><span class="line"><span class="keyword">wire</span> rs1xn_rdrf_set = (~rs1xn_rdrf_r) &amp; dec_i_valid &amp; dec_jalr &amp; dec_jalr_rs1xn &amp; ((~jalr_rs1xn_dep) | jalr_rs1xn_dep_ir_clr);</span><br><span class="line"><span class="keyword">wire</span> rs1xn_rdrf_clr = rs1xn_rdrf_r;</span><br><span class="line"><span class="keyword">wire</span> rs1xn_rdrf_ena = rs1xn_rdrf_set |   rs1xn_rdrf_clr;</span><br><span class="line"><span class="keyword">wire</span> rs1xn_rdrf_nxt = rs1xn_rdrf_set | (~rs1xn_rdrf_clr);</span><br><span class="line">sirv_gnrl_dfflr <span class="variable">#(1) rs1xn_rdrf_dfflrs(rs1xn_rdrf_ena, rs1xn_rdrf_nxt, rs1xn_rdrf_r, clk, rst_n)</span>;</span><br><span class="line"><span class="comment">// Read Port 1 enable signal.</span></span><br><span class="line"><span class="keyword">assign</span> bpu2rf_rs1_ena = rs1xn_rdrf_set;</span><br><span class="line"></span><br><span class="line"><span class="comment">// xn RAW dependency resists or using Read Port 1 period, bpu_wait will prevent IFU from generating next PC until RAW removed or data from Regfile read.</span></span><br><span class="line"><span class="keyword">assign</span> bpu_wait = jalr_rs1x1_dep | jalr_rs1xn_dep | rs1xn_rdrf_set;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Operand 1: If jalr with rs1 == xn, use xn data from Regfile&#x27;s Read Port 1.</span></span><br><span class="line"><span class="keyword">assign</span> prdt_pc_add_op1 = (dec_bxx | dec_jal) ? pc[`E203_PC_SIZE-<span class="number">1</span>:<span class="number">0</span>]</span><br><span class="line">                         : (dec_jalr &amp; dec_jalr_rs1x0) ? `E203_PC_SIZE&#x27;b0</span><br><span class="line">                         : (dec_jalr &amp; dec_jalr_rs1x1) ? rf2bpu_x1[`E203_PC_SIZE-<span class="number">1</span>:<span class="number">0</span>]</span><br><span class="line">                         : rf2bpu_rs1[`E203_PC_SIZE-<span class="number">1</span>:<span class="number">0</span>];  </span><br><span class="line"><span class="comment">// Operand 2: Use offset.</span></span><br><span class="line"><span class="keyword">assign</span> prdt_pc_add_op2 = dec_bjp_imm[`E203_PC_SIZE-<span class="number">1</span>:<span class="number">0</span>];  </span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>PC</strong></p>
+</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/11/04/E203-Pipeline/" rel="prev" title="E203_Pipeline">
+      <i class="fa fa-chevron-left"></i> E203_Pipeline
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2022/11/04/ysyx-StateMachine/" rel="next" title="ysyx_StateMachine">
+      ysyx_StateMachine <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%96%E5%80%BC"><span class="nav-number">1.</span> <span class="nav-text">取值</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%96%E5%80%BC%E7%89%B9%E7%82%B9"><span class="nav-number">1.1.</span> <span class="nav-text">取值特点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BF%AB%E9%80%9F%E5%8F%96%E5%80%BC"><span class="nav-number">1.2.</span> <span class="nav-text">快速取值</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%9D%9E%E5%AF%B9%E9%BD%90%E6%8C%87%E4%BB%A4"><span class="nav-number">1.3.</span> <span class="nav-text">非对齐指令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%86%E6%94%AF%E6%8C%87%E4%BB%A4"><span class="nav-number">1.4.</span> <span class="nav-text">分支指令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RISC-V-%E5%AF%B9%E4%BA%8E%E5%8F%96%E5%80%BC%E7%9A%84%E7%AE%80%E5%8C%96"><span class="nav-number">1.5.</span> <span class="nav-text">RISC-V 对于取值的简化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%9C%82%E9%B8%9F-E200-%E7%9A%84%E5%8F%96%E5%80%BC%E5%AE%9E%E7%8E%B0"><span class="nav-number">1.6.</span> <span class="nav-text">蜂鸟 E200 的取值实现</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Cheems"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">Cheems</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">6</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Cheems</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
