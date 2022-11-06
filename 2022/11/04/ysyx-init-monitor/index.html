@@ -28,7 +28,7 @@
 <meta property="og:description" content="parse_args(int argc, char *argv[])12345678910111213141516171819202122232425262728293031323334353637383940414243&#x2F;&#x2F; 解析命令行选项参数int getopt_long_only(int argc, char * const argv[],                  const ch">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2022-11-04T12:28:08.000Z">
-<meta property="article:modified_time" content="2022-11-04T12:30:02.711Z">
+<meta property="article:modified_time" content="2022-11-04T13:56:54.054Z">
 <meta property="article:author" content="Cheems">
 <meta name="twitter:card" content="summary">
 
@@ -184,7 +184,7 @@
               <span class="post-meta-item-text">Posted on</span>
               
 
-              <time title="Created: 2022-11-04 20:28:08 / Modified: 20:30:02" itemprop="dateCreated datePublished" datetime="2022-11-04T20:28:08+08:00">2022-11-04</time>
+              <time title="Created: 2022-11-04 20:28:08 / Modified: 21:56:54" itemprop="dateCreated datePublished" datetime="2022-11-04T20:28:08+08:00">2022-11-04</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -221,7 +221,7 @@
 
 <h2 id="IFDEF-CONFIG-DEVICE-init-device"><a href="#IFDEF-CONFIG-DEVICE-init-device" class="headerlink" title="IFDEF(CONFIG_DEVICE, init_device())"></a>IFDEF(CONFIG_DEVICE, init_device())</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
 
-<h2 id="init-isa"><a href="#init-isa" class="headerlink" title="init_isa()"></a>init_isa()</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">init_isa</span><span class="params">()</span> &#123;</span><br><span class="line">  <span class="comment">/* Load built-in image. */</span></span><br><span class="line">  <span class="built_in">memcpy</span>(guest_to_host(RESET_VECTOR), img, <span class="keyword">sizeof</span>(img));</span><br><span class="line"></span><br><span class="line">  <span class="comment">/* Initialize this virtual computer system. */</span></span><br><span class="line">  restart();</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h2 id="init-isa"><a href="#init-isa" class="headerlink" title="init_isa()"></a>init_isa()</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">init_isa</span><span class="params">()</span> &#123;</span><br><span class="line">  <span class="comment">/* Load built-in image. */</span></span><br><span class="line">  <span class="built_in">memcpy</span>(guest_to_host(RESET_VECTOR), img, <span class="keyword">sizeof</span>(img));</span><br><span class="line"></span><br><span class="line">  <span class="comment">/* Initialize this virtual computer system. */</span></span><br><span class="line">  restart();</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// physical memory 128MB</span></span><br><span class="line"><span class="type">static</span> <span class="type">uint8_t</span> pmem[CONFIG_MSIZE] PG_ALIGN = &#123;&#125;;</span><br><span class="line"><span class="type">uint8_t</span>* <span class="title function_">guest_to_host</span><span class="params">(<span class="type">paddr_t</span> paddr)</span> &#123; <span class="keyword">return</span> pmem + paddr - CONFIG_MBASE; &#125;</span><br><span class="line"><span class="type">static</span> <span class="type">const</span> <span class="type">uint32_t</span> img [] = &#123;</span><br><span class="line">  <span class="number">0x00000297</span>,  <span class="comment">// auipc t0,0</span></span><br><span class="line">  <span class="number">0x0002b823</span>,  <span class="comment">// sd  zero,16(t0)</span></span><br><span class="line">  <span class="number">0x0102b503</span>,  <span class="comment">// ld  a0,16(t0)</span></span><br><span class="line">  <span class="number">0x00100073</span>,  <span class="comment">// ebreak (used as nemu_trap)</span></span><br><span class="line">  <span class="number">0xdeadbeef</span>,  <span class="comment">// some data</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="type">static</span> <span class="type">void</span> <span class="title function_">restart</span><span class="params">()</span> &#123;</span><br><span class="line">  <span class="comment">/* Set the initial program counter. */</span></span><br><span class="line">  cpu.pc = RESET_VECTOR;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/* The zero register is always 0. */</span></span><br><span class="line">  cpu.gpr[<span class="number">0</span>] = <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 
     </div>
@@ -241,7 +241,10 @@
     <a href="/2022/11/04/ysyx-MacroDetection/" rel="prev" title="ysyx_MacroDetection">
       <i class="fa fa-chevron-left"></i> ysyx_MacroDetection
     </a></div>
-      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/2022/11/06/ysyx-SDB/" rel="next" title="ysyx_SDB">
+      ysyx_SDB <i class="fa fa-chevron-right"></i>
+    </a></div>
     </div>
       </footer>
     
@@ -316,7 +319,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">6</span>
+          <span class="site-state-item-count">7</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>

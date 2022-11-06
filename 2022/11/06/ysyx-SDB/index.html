@@ -20,19 +20,19 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="12(0,x,x)&gt;(1,0,x)&gt;(2,0,0)&gt;(3,0,1)&gt;(4,1,1)&gt;(2,1,1)&gt;(3,1,2)&gt;(4,3,2)&gt;(2,3,2)&gt;(3,3,3)&gt;(4,6,3)&gt;(2,6,3)...(2,4851,98)&gt;(3,4851,99)&gt;(4,4950,99)&gt;(2,4950,99)&gt;(3，4950">
+  <meta name="description" content="si [N]1&amp;#123; &quot;si&quot;, &quot;Step in&quot;, cmd_si&amp;#125;  123456789static int cmd_si(char *args)&amp;#123;  if(args !&#x3D; NULL)&amp;#123;    cpu_exec(atoi(args));  &amp;#125;else&amp;#123;    cpu_exec(1);  &amp;#125;">
 <meta property="og:type" content="article">
-<meta property="og:title" content="ysyx_StateMachine">
-<meta property="og:url" content="http://example.com/2022/11/04/ysyx-StateMachine/index.html">
+<meta property="og:title" content="ysyx_SDB">
+<meta property="og:url" content="http://example.com/2022/11/06/ysyx-SDB/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="12(0,x,x)&gt;(1,0,x)&gt;(2,0,0)&gt;(3,0,1)&gt;(4,1,1)&gt;(2,1,1)&gt;(3,1,2)&gt;(4,3,2)&gt;(2,3,2)&gt;(3,3,3)&gt;(4,6,3)&gt;(2,6,3)...(2,4851,98)&gt;(3,4851,99)&gt;(4,4950,99)&gt;(2,4950,99)&gt;(3，4950">
+<meta property="og:description" content="si [N]1&amp;#123; &quot;si&quot;, &quot;Step in&quot;, cmd_si&amp;#125;  123456789static int cmd_si(char *args)&amp;#123;  if(args !&#x3D; NULL)&amp;#123;    cpu_exec(atoi(args));  &amp;#125;else&amp;#123;    cpu_exec(1);  &amp;#125;">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2022-11-04T12:26:15.000Z">
-<meta property="article:modified_time" content="2022-11-04T12:29:01.550Z">
+<meta property="article:published_time" content="2022-11-06T11:16:44.000Z">
+<meta property="article:modified_time" content="2022-11-06T12:21:33.471Z">
 <meta property="article:author" content="Cheems">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="http://example.com/2022/11/04/ysyx-StateMachine/">
+<link rel="canonical" href="http://example.com/2022/11/06/ysyx-SDB/">
 
 
 <script id="page-configurations">
@@ -45,7 +45,7 @@
   };
 </script>
 
-  <title>ysyx_StateMachine | Hexo</title>
+  <title>ysyx_SDB | Hexo</title>
   
 
 
@@ -160,7 +160,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/11/04/ysyx-StateMachine/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/11/06/ysyx-SDB/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.png">
@@ -173,7 +173,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          ysyx_StateMachine
+          ysyx_SDB
         </h1>
 
         <div class="post-meta">
@@ -184,7 +184,7 @@
               <span class="post-meta-item-text">Posted on</span>
               
 
-              <time title="Created: 2022-11-04 20:26:15 / Modified: 20:29:01" itemprop="dateCreated datePublished" datetime="2022-11-04T20:26:15+08:00">2022-11-04</time>
+              <time title="Created: 2022-11-06 19:16:44 / Modified: 20:21:33" itemprop="dateCreated datePublished" datetime="2022-11-06T19:16:44+08:00">2022-11-06</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -211,7 +211,25 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">(0,x,x)&gt;(1,0,x)&gt;(2,0,0)&gt;(3,0,1)&gt;(4,1,1)&gt;(2,1,1)&gt;(3,1,2)&gt;(4,3,2)&gt;(2,3,2)&gt;(3,3,3)&gt;(4,6,3)&gt;(2,6,3)...</span><br><span class="line">(2,4851,98)&gt;(3,4851,99)&gt;(4,4950,99)&gt;(2,4950,99)&gt;(3，4950，100)&gt;(4,5050,100)&gt;(5,5050,100)&gt;(5,5050,100)...</span><br></pre></td></tr></table></figure>
+        <h2 id="si-N"><a href="#si-N" class="headerlink" title="si [N]"></a>si [N]</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123; <span class="string">&quot;si&quot;</span>, <span class="string">&quot;Step in&quot;</span>, cmd_si&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">static</span> <span class="type">int</span> <span class="title function_">cmd_si</span><span class="params">(<span class="type">char</span> *args)</span>&#123;</span><br><span class="line">  <span class="keyword">if</span>(args != <span class="literal">NULL</span>)&#123;</span><br><span class="line">    cpu_exec(atoi(args));</span><br><span class="line">  &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">    cpu_exec(<span class="number">1</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="info"><a href="#info" class="headerlink" title="info"></a>info</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123; <span class="string">&quot;info&quot;</span>, <span class="string">&quot;Get information of regs or watchpoints&quot;</span>, cmd_info&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">static</span> <span class="type">int</span> <span class="title function_">cmd_info</span><span class="params">(<span class="type">char</span> *args)</span>&#123;</span><br><span class="line">  <span class="keyword">if</span>(*args == <span class="string">&#x27;r&#x27;</span>)&#123;</span><br><span class="line">    isa_reg_display();</span><br><span class="line">  &#125;<span class="keyword">else</span> <span class="keyword">if</span>(*args == <span class="string">&#x27;w&#x27;</span>)&#123;</span><br><span class="line"></span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="x-N-EXPR"><a href="#x-N-EXPR" class="headerlink" title="x [N] [EXPR]"></a>x [N] [EXPR]</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123; <span class="string">&quot;x&quot;</span>, <span class="string">&quot;Scan the memory&quot;</span>, cmd_x&#125;</span><br></pre></td></tr></table></figure>
+
+<p>规定 EXPR 只能是十六进制数</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">static</span> <span class="type">int</span> <span class="title function_">cmd_x</span><span class="params">(<span class="type">char</span> *args)</span>&#123;</span><br><span class="line">  <span class="keyword">if</span>(args != <span class="literal">NULL</span>)&#123;</span><br><span class="line">    <span class="type">char</span> *inst = strtok(args, <span class="string">&quot; &quot;</span>);</span><br><span class="line">    <span class="type">char</span> *expr = args + <span class="built_in">strlen</span>(args) + <span class="number">1</span>;</span><br><span class="line">    <span class="type">paddr_t</span> addr_start_scan;</span><br><span class="line">    <span class="built_in">sscanf</span>(expr,<span class="string">&quot;%x&quot;</span>,&amp;addr_start_scan);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;inst: %d, addr_start: 0x%08x\n&quot;</span>, atoi(inst), addr_start_scan);</span><br><span class="line">    <span class="keyword">for</span>(u_char i = <span class="number">0</span>; i &lt;= (atoi(inst)<span class="number">-1</span>); i++)&#123;</span><br><span class="line">      <span class="built_in">printf</span>(<span class="string">&quot;%08lx\n&quot;</span>, paddr_read(addr_start_scan + i*<span class="number">4</span>, <span class="number">4</span>));</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>EXPR 正则表达式</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
 
 
     </div>
@@ -228,13 +246,10 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2022/11/04/E203-Fetch/" rel="prev" title="E203_Fetch">
-      <i class="fa fa-chevron-left"></i> E203_Fetch
+    <a href="/2022/11/04/ysyx-init-monitor/" rel="prev" title="ysyx_init_monitor">
+      <i class="fa fa-chevron-left"></i> ysyx_init_monitor
     </a></div>
-      <div class="post-nav-item">
-    <a href="/2022/11/04/ysyx-MacroDetection/" rel="next" title="ysyx_MacroDetection">
-      ysyx_MacroDetection <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -293,6 +308,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#si-N"><span class="nav-number">1.</span> <span class="nav-text">si [N]</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#info"><span class="nav-number">2.</span> <span class="nav-text">info</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#x-N-EXPR"><span class="nav-number">3.</span> <span class="nav-text">x [N] [EXPR]</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 

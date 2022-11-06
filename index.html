@@ -155,6 +155,97 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/11/06/ysyx-SDB/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="Cheems">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/11/06/ysyx-SDB/" class="post-title-link" itemprop="url">ysyx_SDB</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2022-11-06 19:16:44 / Modified: 20:21:33" itemprop="dateCreated datePublished" datetime="2022-11-06T19:16:44+08:00">2022-11-06</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/RISC-V/" itemprop="url" rel="index"><span itemprop="name">RISC-V</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/RISC-V/ysyx/" itemprop="url" rel="index"><span itemprop="name">ysyx</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="si-N"><a href="#si-N" class="headerlink" title="si [N]"></a>si [N]</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123; <span class="string">&quot;si&quot;</span>, <span class="string">&quot;Step in&quot;</span>, cmd_si&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">static</span> <span class="type">int</span> <span class="title function_">cmd_si</span><span class="params">(<span class="type">char</span> *args)</span>&#123;</span><br><span class="line">  <span class="keyword">if</span>(args != <span class="literal">NULL</span>)&#123;</span><br><span class="line">    cpu_exec(atoi(args));</span><br><span class="line">  &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">    cpu_exec(<span class="number">1</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="info"><a href="#info" class="headerlink" title="info"></a>info</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123; <span class="string">&quot;info&quot;</span>, <span class="string">&quot;Get information of regs or watchpoints&quot;</span>, cmd_info&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">static</span> <span class="type">int</span> <span class="title function_">cmd_info</span><span class="params">(<span class="type">char</span> *args)</span>&#123;</span><br><span class="line">  <span class="keyword">if</span>(*args == <span class="string">&#x27;r&#x27;</span>)&#123;</span><br><span class="line">    isa_reg_display();</span><br><span class="line">  &#125;<span class="keyword">else</span> <span class="keyword">if</span>(*args == <span class="string">&#x27;w&#x27;</span>)&#123;</span><br><span class="line"></span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="x-N-EXPR"><a href="#x-N-EXPR" class="headerlink" title="x [N] [EXPR]"></a>x [N] [EXPR]</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123; <span class="string">&quot;x&quot;</span>, <span class="string">&quot;Scan the memory&quot;</span>, cmd_x&#125;</span><br></pre></td></tr></table></figure>
+
+<p>规定 EXPR 只能是十六进制数</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">static</span> <span class="type">int</span> <span class="title function_">cmd_x</span><span class="params">(<span class="type">char</span> *args)</span>&#123;</span><br><span class="line">  <span class="keyword">if</span>(args != <span class="literal">NULL</span>)&#123;</span><br><span class="line">    <span class="type">char</span> *inst = strtok(args, <span class="string">&quot; &quot;</span>);</span><br><span class="line">    <span class="type">char</span> *expr = args + <span class="built_in">strlen</span>(args) + <span class="number">1</span>;</span><br><span class="line">    <span class="type">paddr_t</span> addr_start_scan;</span><br><span class="line">    <span class="built_in">sscanf</span>(expr,<span class="string">&quot;%x&quot;</span>,&amp;addr_start_scan);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;inst: %d, addr_start: 0x%08x\n&quot;</span>, atoi(inst), addr_start_scan);</span><br><span class="line">    <span class="keyword">for</span>(u_char i = <span class="number">0</span>; i &lt;= (atoi(inst)<span class="number">-1</span>); i++)&#123;</span><br><span class="line">      <span class="built_in">printf</span>(<span class="string">&quot;%08lx\n&quot;</span>, paddr_read(addr_start_scan + i*<span class="number">4</span>, <span class="number">4</span>));</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>EXPR 正则表达式</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://example.com/2022/11/04/ysyx-init-monitor/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -180,7 +271,7 @@
               <span class="post-meta-item-text">Posted on</span>
               
 
-              <time title="Created: 2022-11-04 20:28:08 / Modified: 20:30:02" itemprop="dateCreated datePublished" datetime="2022-11-04T20:28:08+08:00">2022-11-04</time>
+              <time title="Created: 2022-11-04 20:28:08 / Modified: 21:56:54" itemprop="dateCreated datePublished" datetime="2022-11-04T20:28:08+08:00">2022-11-04</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -217,7 +308,7 @@
 
 <h2 id="IFDEF-CONFIG-DEVICE-init-device"><a href="#IFDEF-CONFIG-DEVICE-init-device" class="headerlink" title="IFDEF(CONFIG_DEVICE, init_device())"></a>IFDEF(CONFIG_DEVICE, init_device())</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
 
-<h2 id="init-isa"><a href="#init-isa" class="headerlink" title="init_isa()"></a>init_isa()</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">init_isa</span><span class="params">()</span> &#123;</span><br><span class="line">  <span class="comment">/* Load built-in image. */</span></span><br><span class="line">  <span class="built_in">memcpy</span>(guest_to_host(RESET_VECTOR), img, <span class="keyword">sizeof</span>(img));</span><br><span class="line"></span><br><span class="line">  <span class="comment">/* Initialize this virtual computer system. */</span></span><br><span class="line">  restart();</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h2 id="init-isa"><a href="#init-isa" class="headerlink" title="init_isa()"></a>init_isa()</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">init_isa</span><span class="params">()</span> &#123;</span><br><span class="line">  <span class="comment">/* Load built-in image. */</span></span><br><span class="line">  <span class="built_in">memcpy</span>(guest_to_host(RESET_VECTOR), img, <span class="keyword">sizeof</span>(img));</span><br><span class="line"></span><br><span class="line">  <span class="comment">/* Initialize this virtual computer system. */</span></span><br><span class="line">  restart();</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// physical memory 128MB</span></span><br><span class="line"><span class="type">static</span> <span class="type">uint8_t</span> pmem[CONFIG_MSIZE] PG_ALIGN = &#123;&#125;;</span><br><span class="line"><span class="type">uint8_t</span>* <span class="title function_">guest_to_host</span><span class="params">(<span class="type">paddr_t</span> paddr)</span> &#123; <span class="keyword">return</span> pmem + paddr - CONFIG_MBASE; &#125;</span><br><span class="line"><span class="type">static</span> <span class="type">const</span> <span class="type">uint32_t</span> img [] = &#123;</span><br><span class="line">  <span class="number">0x00000297</span>,  <span class="comment">// auipc t0,0</span></span><br><span class="line">  <span class="number">0x0002b823</span>,  <span class="comment">// sd  zero,16(t0)</span></span><br><span class="line">  <span class="number">0x0102b503</span>,  <span class="comment">// ld  a0,16(t0)</span></span><br><span class="line">  <span class="number">0x00100073</span>,  <span class="comment">// ebreak (used as nemu_trap)</span></span><br><span class="line">  <span class="number">0xdeadbeef</span>,  <span class="comment">// some data</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="type">static</span> <span class="type">void</span> <span class="title function_">restart</span><span class="params">()</span> &#123;</span><br><span class="line">  <span class="comment">/* Set the initial program counter. */</span></span><br><span class="line">  cpu.pc = RESET_VECTOR;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/* The zero register is always 0. */</span></span><br><span class="line">  cpu.gpr[<span class="number">0</span>] = <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 
       
@@ -1217,7 +1308,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">6</span>
+          <span class="site-state-item-count">7</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
